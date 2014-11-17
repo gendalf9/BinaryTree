@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class BTNode {
 	private BTNode parent;
 	private ArrayList<BTNode> leafs = new ArrayList<BTNode>();
-	private boolean isRoot;
 	private String id;
 
 	public BTNode(String id){
@@ -21,11 +20,7 @@ public class BTNode {
 	}
 
 	public boolean isRoot() {
-		return isRoot;
-	}
-
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
+		return (parent==null);
 	}
 
 	public void addNewLeaf(BTNode node) {
@@ -69,9 +64,8 @@ public class BTNode {
 	public void leafToParent(String id) {
 		for (BTNode leaf : leafs) {
 			if (leaf.getId().equalsIgnoreCase(id)) {
-				if (isRoot) {
+				if (parent == null) {
 					parent = leaf;
-					isRoot = false;
 					leafs.remove(leaf);
 					return;
 				} else {
@@ -91,7 +85,6 @@ public class BTNode {
 		parent.leafToParent(id);
 		addNewLeaf(parent);
 		parent = null;
-		isRoot = true;
 	}
 
 	public void printTree() {
@@ -107,11 +100,6 @@ public class BTNode {
 	@Override
 	public String toString() {
 		return "["+id+"]";
-	}
-
-	public void setIsRoot(boolean b) {
-		this.isRoot = b;
-		
 	}
 
 }

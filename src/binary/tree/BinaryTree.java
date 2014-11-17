@@ -4,7 +4,6 @@ package binary.tree;
 public class BinaryTree {
 	public static void main(String[] args) throws Exception {
 		BTNode root = new BTNode("root");
-		root.setIsRoot(true);
 		BTNode a = root.addNewLeaf("a");
 		BTNode b = root.addNewLeaf("b");
 		BTNode c = a.addNewLeaf("c");
