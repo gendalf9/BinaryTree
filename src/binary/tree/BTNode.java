@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class BTNode {
 	private BTNode parent;
-	private ArrayList<BTNode> leafs = new ArrayList<BTNode>();
+	private ArrayList<BTNode> children = new ArrayList<BTNode>();
 	private String id;
 
 	public BTNode(String id){
@@ -23,34 +23,28 @@ public class BTNode {
 		return (parent==null);
 	}
 
-	public void addNewLeaf(BTNode node) {
-		if (leafs.size() < 2){
+	public void addNewChild(BTNode node) {
+		if (children.size() < 2){
 			node.setParent(this);
-			leafs.add(node);
+			children.add(node);
 		}
 		else
-			new Exception("No space for leaf");
+			new Exception("No space for child");
 	}
 	
-	public BTNode addNewLeaf(String id) {
+	public BTNode addNewChild(String id) {
 		
-		if (leafs.size() < 2){
-			BTNode leaf = new BTNode(id);
-			leaf.setParent(this);
-			leafs.add(leaf);
-			return leaf;
-		}
-		else
-			new Exception("No space for leaf");
-		return null;
+		BTNode child = new BTNode(id);
+		addNewChild(child);
+		return child;
 	}
 
-	public ArrayList<BTNode> getLeafs() {
-		return leafs;
+	public ArrayList<BTNode> getChildren() {
+		return children;
 	}
 
-	public BTNode getLeaf(int index) {
-		return leafs.get(index);
+	public BTNode getChild(int index) {
+		return children.get(index);
 	}
 
 	public BTNode getParent() {
@@ -61,18 +55,18 @@ public class BTNode {
 		this.parent = parent;
 	}
 
-	public void leafToParent(String id) {
-		for (BTNode leaf : leafs) {
-			if (leaf.getId().equalsIgnoreCase(id)) {
+	public void putChildToParent(String id) {
+		for (BTNode child : children) {
+			if (child.getId().equalsIgnoreCase(id)) {
 				if (parent == null) {
-					parent = leaf;
-					leafs.remove(leaf);
+					parent = child;
+					children.remove(child);
 					return;
 				} else {
-					leafs.remove(leaf);
-					parent.leafToParent(this.id);
-					leafs.add(parent);
-					parent = leaf;
+					children.remove(child);
+					parent.putChildToParent(this.id);
+					children.add(parent);
+					parent = child;
 					continue;
 				}
 			}
@@ -80,17 +74,17 @@ public class BTNode {
 	}
 
 	public void setAsRoot() throws Exception {
-		if (!leafs.isEmpty() || leafs.size() > 0)
+		if (!children.isEmpty() || children.size() > 0)
 			throw new Exception("I'm not leaf");
-		parent.leafToParent(id);
-		addNewLeaf(parent);
+		parent.putChildToParent(id);
+		addNewChild(parent);
 		parent = null;
 	}
 
 	public void printTree() {
-		System.out.println("parent : "+parent+", id : "+this+", leafs : ["+leafs+"]");
-		if(leafs!=null){
-			for(BTNode leaf:leafs){
+		System.out.println("parent : "+parent+", id : "+this+", children : ["+children+"]");
+		if(children!=null){
+			for(BTNode leaf:children){
 				leaf.printTree();
 			}
 		}
